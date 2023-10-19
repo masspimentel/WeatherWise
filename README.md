@@ -41,7 +41,6 @@ The script will display the weather data, and the top temperatures will be sorte
 
 
 ## Roadmap
-<code>
 ```
 - [x] Basic Data Analysis
 - [x] Usage of Pandas
@@ -49,7 +48,6 @@ The script will display the weather data, and the top temperatures will be sorte
 - [ ] Create new, more advanced dataframes for visualization
 - [ ] Create GUI & more user input to create a more customizable application
 ```
-</code>
 
 ## Acknowledgments
 Special thanks to OpenWeather for providing weather data through their API.
