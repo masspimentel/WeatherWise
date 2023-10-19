@@ -1,6 +1,6 @@
 # Weather Analysis with OpenWeatherAPI
 
-![Weather Image]("https://imgur.com/a/1r7plrq")
+![Weather Image]("https://i.imgur.com/acLRJhM.jpg")
 
 A Python script to retrieve and analyze weather data using OpenWeatherAPI.
 
@@ -24,24 +24,21 @@ This is an ongoing project that I will be continually add new functions to.
    git clone https://github.com/masspimentel/beg-project.git
    cd your-repo
 
-   Run the script: python weather_analysis.py
+   Run the script: python main.py
    Enter the city name, country code, and the number of API calls as prompted.
 
 ## Results
-   The script will display the weather data, and the top temperatures will be sorted and shown in descending order.
+The script will display the weather data, and the top temperatures will be sorted and shown in descending order.
 
 ## Sample Output
-                    dt  sunrise   sunset  moonrise  moonset  moon_phase    pop  windspeed  temp_max
-    0  2023-04-06  06:57:29 AM  06:36:09 PM  03:22:03 AM  02:26:58 PM   0.19       10.3     25.73
-    1  2023-04-07  06:55:57 AM  06:37:16 PM  04:19:03 AM  03:27:25 PM   0.62        5.6     26.37
-    2  2023-04-08  06:54:25 AM  06:38:24 PM  05:15:56 AM  04:28:10 PM   0.64       10.1     27.19
-    3  2023-04-09  06:52:54 AM  06:39:32 PM  06:12:44 AM  05:28:42 PM   0.17       12.2     28.01
-    4  2023-04-10  06:51:22 AM  06:40:40 PM  07:09:28 AM  06:28:49 PM   0.29       12.3     28.05
-
-## License
-    This project is licensed under the MIT License. See the LICENSE file for details.
+         dt      sunrise        sunset     moonrise    moonset       pop     windspeed   temp_max
+0  2023-04-06  06:57:29 AM  06:36:09 PM  03:22:03 AM  02:26:58 PM   0.19       10.3     25.73
+1  2023-04-07  06:55:57 AM  06:37:16 PM  04:19:03 AM  03:27:25 PM   0.62        5.6     26.37
+2  2023-04-08  06:54:25 AM  06:38:24 PM  05:15:56 AM  04:28:10 PM   0.64       10.1     27.19
+3  2023-04-09  06:52:54 AM  06:39:32 PM  06:12:44 AM  05:28:42 PM   0.17       12.2     28.01
+4  2023-04-10  06:51:22 AM  06:40:40 PM  07:09:28 AM  06:28:49 PM   0.29       12.3     28.05
 
 ## Acknowledgments
     Special thanks to OpenWeather for providing weather data through their API.
 
-Feel free to customize this README to suit your project's specific needs.
+    Feel free to customize this README to suit your project's specific needs.
