@@ -1,6 +1,6 @@
 # Weather Analysis with OpenWeatherAPI
 
-![Weather Image]
+☀🌤☀
 
 A Python script to retrieve and analyze weather data using OpenWeatherAPI.
 
