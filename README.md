@@ -1,6 +1,6 @@
 # Weather Analysis with OpenWeatherAPI
 
-![Weather Image]("https://i.imgur.com/acLRJhM.jpg")
+![Weather Image]("☀🌤☀")
 
 A Python script to retrieve and analyze weather data using OpenWeatherAPI.
 
@@ -38,7 +38,16 @@ The script will display the weather data, and the top temperatures will be sorte
 3  2023-04-09  06:52:54 AM  06:39:32 PM  06:12:44 AM  05:28:42 PM   0.17       12.2     28.01
 4  2023-04-10  06:51:22 AM  06:40:40 PM  07:09:28 AM  06:28:49 PM   0.29       12.3     28.05
 
-## Acknowledgments
-    Special thanks to OpenWeather for providing weather data through their API.
+## Roadmap
 
-    Feel free to customize this README to suit your project's specific needs.
+<input type="checkbox" checked> Basic Data Analysis<br>
+<input type="checkbox" checked> Usage of Pandas<br>
+<input type="checkbox"> Begin implementation of matplotlib & Seaborn for visualization<br>
+<input type="checkbox"> Create new, more advanced dataframes for visualization<br>
+<input type="checkbox"> Create GUI & more user input to create a more customizable application<br>
+
+
+## Acknowledgments
+Special thanks to OpenWeather for providing weather data through their API.
+
+Feel free to customize this README to suit your project's specific needs.
