@@ -39,6 +39,11 @@ The script will display the weather data, and the top temperatures will be sorte
 |  2023-04-09  |  06:52:54 AM  |  06:39:32 PM  |  06:12:44 AM  |  05:28:42 PM  |  0.17  |  28.01  |
 |  2023-04-10  |  06:51:22 AM  |  06:40:40 PM  |  07:09:28 AM  |  06:28:49 PM  |  0.29  |  28.05  |
 
+## Sample Graphs
+
+![alt text](https://github.com/masspimentel/beg-project/blob/main/images/wspeedvswdegcompassgraph.PNG?raw=true)
+![alt text](https://github.com/masspimentel/beg-project/blob/main/images/maxtempbargraph.PNG?raw=true)
+![alt text](https://github.com/masspimentel/beg-project/blob/main/images/humiditybargraph.PNG?raw=true)
 
 ## Roadmap
 ```
