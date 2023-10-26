@@ -6,15 +6,18 @@ A Python script to retrieve and analyze weather data using OpenWeatherAPI.
 
 ## Overview
 
-This Python script allows you to retrieve weather information for a given city using the OpenWeatherAPI. It provides daily weather forecasts, including temperature, sunrise/sunset times, moonrise/moonset times, moon phase, precipitation probability, and wind speed. Additionally, it identifies the top temperatures for the forecasted days.
+This Python script allows you to retrieve weather information for a given city using the OpenWeatherAPI. It provides daily weather forecasts, including temperature, sunrise/sunset times, moonrise/moonset times, moon phase, precipitation probability, and wind speed. Additionally, it identifies the top temperatures for the forecasted days. 
+
+UPDATE 24/10/2023: I have now added functionaility to retrieve historical weather data (only to 1979 and up to 4 days in the future). Also, ability to convert between lat and lon to readable location with OpenCageAPI.
 
 This is an ongoing project that I will be continually add new functions to. 
 
 ## Requirements
 
 - Python 3.x
-- Libraries: requests, json, datetime, pandas, numpy, matplotlib, seaborn
+- Libraries: requests, json, datetime, pandas, numpy, matplotlib, seaborn, opencage, time
 - OpenWeatherAPI key (sign up at [OpenWeather](https://openweathermap.org/))
+- OpenCageAPI key (sign up at [OpenCage](https://opencagedata.com/))
 
 ## Usage
 
@@ -49,7 +52,8 @@ The script will display the weather data, and the top temperatures will be sorte
 ```
 - [x] Basic Data Analysis
 - [x] Usage of Pandas
-- [ ] Begin implementation of matplotlib & Seaborn for visualization
+- [x] Begin implementation of matplotlib & Seaborn for visualization
+- [x] Added functionality to retrieve historical data
 - [ ] Create new, more advanced dataframes for visualization
 - [ ] Create GUI & more user input to create a more customizable application
 ```
