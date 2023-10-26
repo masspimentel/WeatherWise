@@ -10,7 +10,14 @@ import seaborn as sns
 import matplotlib.colors as mcolors
 import time
 from opencage.geocoder import OpenCageGeocode
+import tkinter as tk
+from tkcalendar import Calendar, DateEntry
+import subprocess
 
+import csv
+
+
+realTime = None
 
 class currentWeather:
     # This function gets the location data using the city name and country code. The data is then converted to json and returned.
@@ -118,6 +125,16 @@ class historicalWeather:
         timeRes = requests.get(endpoint)
         historyData = timeRes.json()
         print(historyData)
+        
+        # csv_columns = historyData.values()        |
+        # csv_name = 'historyData.csv'              |
+        # try:                                      |
+        #     with open(csv_name, 'w') as csvfile:  | - Used to export historyData values to csv
+        #         write = csv.writer(csvfile)       |
+        #         write.writerow(csv_columns)       |
+        # except IOError:                           |
+        #     print("I/O error")                    |
+
         return historyData
     @staticmethod
     def process_historical_data(historyData):
@@ -128,7 +145,7 @@ class historicalWeather:
         histweatherDF['feels_like'] = histweatherDF['feels_like'].astype(float)
         histweatherDF['wind_speed'] = histweatherDF['wind_speed'].astype(float)
         histweatherDF['weather_description'] = histweatherDF['weather'].apply(lambda x: x[0]['description']).astype(str)
-        print(histweatherDF)
+        print(histweatherDF.columns.to_list())
         return histweatherDF
     @staticmethod
     def plot_historical_data(histweatherDF):
@@ -142,6 +159,23 @@ class historicalWeather:
             plt.show()
         else:
             print('Data is empty or doesn\'t meet the condition')
+
+def getDatePicker():
+    def date_picker_callback():
+        global realTime
+        realTime = date_picker.get_date()
+        print(realTime)
+        selectDate.destroy()
+    selectDate = tk.Tk()
+    selectDate.title("Select Date")
+
+    date_picker = Calendar(selectDate, selectmode="day", date_pattern="dd/mm/yyyy")
+    date_picker.pack()
+
+    confirm = tk.Button(selectDate, text="Confirm", command=date_picker_callback)
+    confirm.pack()
+
+    selectDate.mainloop()
 
 # This is where we get user input and call the functions to get the data and plot it.
 def main():
@@ -180,8 +214,8 @@ def main():
     elif choice == "2":
         city = input("Enter city name: ")
         countryCode = input("Country Code: ")
-        realTime = input("Enter Date DD/MM/YYYY:")
         print("Note: OpenWeatherMapAPI only has historical data from 1/1/1970 to 4 days ahead of the current date. Please do not enter a date before or after this range.")
+        getDatePicker()
         callAmount = input("Enter amount of API calls: ")
 
         historicalWeather_data = historicalWeather.get_location(city, countryCode, callAmount)
@@ -194,9 +228,10 @@ def main():
                 geoLon = results[0]['geometry']['lng']
             else: 
                 print("Error: No results found")
-            histWeatherData = historicalWeather.get_historical_data(geoLat, geoLon, realTime)
-            histWeatherDF = historicalWeather.process_historical_data(histWeatherData)
-            historicalWeather.plot_historical_data(histWeatherDF)
+
+        histWeatherData = historicalWeather.get_historical_data(geoLat, geoLon, realTime)
+        histWeatherDF = historicalWeather.process_historical_data(histWeatherData)
+        historicalWeather.plot_historical_data(histWeatherDF)
 
     else:
         print("Invalid choice")
