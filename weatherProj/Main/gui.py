@@ -40,7 +40,7 @@ class LoginOrRegister(QDialog):
         self.setFixedSize(300, 200)
 
         #setting login or register layout, buttons, labels, and input fields
-        self.titleCard = QLabel('Weather App by Mass', self)
+        self.titleCard = QLabel('WeatherWise by masspimentel', self)
         self.titleCard.setFont(QFont('Poppins SemiBold', 13))
         self.titleCard.setStyleSheet('QLabel { color: #09203F; }')
         self.titleCard.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -104,6 +104,8 @@ class LoginOrRegister(QDialog):
 
         #show message box to user that registration was successful
         msgBox = QMessageBox()
+        msgBox.setWindowTitle('Success!')
+        msgBox.setWindowIcon(QIcon('weatherProj\Main\images\sunny.png'))
         msgBox.setText('Registration successful')
         msgBox.exec()
 
@@ -122,6 +124,8 @@ class LoginOrRegister(QDialog):
         #if the result is none, show message box to user that username or password is incorrect
         if result is None:
             msgBox = QMessageBox()
+            msgBox.setWindowTitle('Error')
+            msgBox.setWindowIcon(QIcon('weatherProj\Main\images\\thunder.png'))
             msgBox.setText('Username or password is incorrect')
             msgBox.exec()
             self.reject()
@@ -131,6 +135,8 @@ class LoginOrRegister(QDialog):
             user_id, salt_password, hashed_password = result
             if bcrypt.checkpw(password.encode(), hashed_password): #if the password is correct, show message box to user that login was successful and let them into the app
                 msgBox = QMessageBox()
+                msgBox.setWindowTitle('Success!')
+                msgBox.setWindowIcon(QIcon('weatherProj\Main\images\sunny.png'))
                 msgBox.setText('Login successful')
                 msgBox.exec()
                 self.accept()
@@ -139,9 +145,11 @@ class LoginOrRegister(QDialog):
             #if the password is incorrect, show message box to user that username or password is incorrect
             else:
                 msgBox = QMessageBox()
+                msgBox.setWindowTitle('Error')
+                msgBox.setWindowIcon(QIcon('weatherProj\Main\images\\thunder.png'))
                 msgBox.setText('Username or password is incorrect')
                 msgBox.exec()
-            self.login_button.clicked.disconnect(self.login_user)
+            #self.login_button.clicked.disconnect(self.login_user)
 
 #GUI class, used to initialize the main GUI, do all the calculations, and update the GUI
 class GUI(QMainWindow):
@@ -157,9 +165,11 @@ class GUI(QMainWindow):
             #if the user has logged in successfully, break out of the loop
             if result == QDialog.DialogCode.Accepted and self.login_dialog.is_login_success:
                 self.user_id = self.login_dialog.login_user()
+                self.login_dialog.login_button.clicked.disconnect(self.login_dialog.login_user)
                 break
             #if the user has not logged in successfully, show message box to user that they must login or register to use the app
             elif result == QDialog.DialogCode.Rejected:
+                self.login_dialog.login_button.clicked.connect(self.login_dialog.login_user)
                 response = QMessageBox.critical(self, 'Error.', 'You must login or register to use this app.', QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
                 # if the user select No, exit the app
                 if response == QMessageBox.StandardButton.No:
@@ -178,7 +188,7 @@ class GUI(QMainWindow):
         font = QFont('Poppins Medium', 10)
             
         #setting window title and icon
-        self.setWindowTitle('Weather App')
+        self.setWindowTitle('WeatherWise by masspimentel')
         self.setWindowIcon(QIcon('weatherProj\Main\images\Weather-PNG.png'))
 
         #setting up the main layout, buttons, labels, and input fields
@@ -253,6 +263,13 @@ class GUI(QMainWindow):
         self.next_day_button.setVisible(False)
         self.layout.addWidget(self.next_day_button)
 
+        self.prev_day_button = HoverButton('Previous Day')
+        self.prev_day_button.clicked.connect(self.click_prev_day)
+        self.prev_day_button.setFlat(True)
+        self.prev_day_button.setFont(font)
+        self.prev_day_button.setVisible(False)
+        self.layout.addWidget(self.prev_day_button)
+
         self.figure = Figure()
 
         self.canvas = FigureCanvas(self.figure)
@@ -271,10 +288,27 @@ class GUI(QMainWindow):
         self.forecast_container = QWidget()
         self.forecast_container.setLayout(self.forecast_layout)
 
+        self.back_to_forecast = HoverButton('Back to Forecast')
+        self.back_to_forecast.setFont(font)
+        self.back_to_forecast.clicked.connect(self.back_to_forecast_func)
+        self.back_to_forecast.setVisible(False)
+        self.layout.addWidget(self.back_to_forecast)
+
         self.add_phone_num = HoverButton('Add Phone Number')
         self.add_phone_num.setFont(font)
         self.add_phone_num.clicked.connect(self.add_phone_num_func)
         self.layout.addWidget(self.add_phone_num)
+
+        #check if user already has phone_num in userPref table. if they do, hide the add phone num button
+        conn = sqlite3.connect('weatherProj\WeatherApp.db')
+        cur = conn.cursor()
+        cur.execute('''SELECT phone_num FROM userPref WHERE user_id = ?''', (self.user_id,))
+        result = cur.fetchone()
+
+        if result is None:
+            self.add_phone_num.setVisible(True)
+        else: 
+            self.add_phone_num.setVisible(False)
 
         self.write_phone_num = HoverButton('Add Number?')
         self.write_phone_num.setFont(font)
@@ -282,7 +316,76 @@ class GUI(QMainWindow):
         self.write_phone_num.clicked.connect(self.write_phone_num_func)
         self.layout.addWidget(self.write_phone_num)
 
+        self.remove_phone_num = HoverButton('Stop Notifications')
+        self.remove_phone_num.clicked.connect(self.remove_phone_num_func)
+        self.remove_phone_num.setFont(font)
+        self.remove_phone_num.setVisible(False)
+        self.layout.addWidget(self.remove_phone_num)
+
+
+        self.location_label = QLabel() 
+
+        conn = sqlite3.connect('weatherProj\WeatherApp.db')
+        cur = conn.cursor()
+        cur.execute('''SELECT city, country_code FROM userPref WHERE user_id = ?''', (self.user_id,))
+        result = cur.fetchone()
+        city = result[0]
+        country_code = result[1]
+        conn.commit()
+        conn.close()
+
+        self.location_label.setText(f'Location: {city}, {coco.convert(names=country_code, to="name_short")}')
+        self.location_label.setFont(font)
+        self.location_label.setStyleSheet('QLabel { color: white; }')
+        self.location_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        self.location_label.setVisible(False)
+        self.layout.addWidget(self.location_label)
+
         self.layout.addWidget(self.forecast_container)
+
+    def back_to_forecast_func(self):
+        self.canvas.setVisible(False)
+        self.next_page.setVisible(False)
+        self.prev_page.setVisible(False)
+        self.show_graphs.setVisible(True)
+        self.back_to_forecast.setVisible(False)
+        self.forecast_container.setVisible(True)
+        self.adjustSize()
+
+    def remove_phone_num_func(self):
+        conn = sqlite3.connect('weatherProj\WeatherApp.db')
+        cur = conn.cursor()
+        cur.execute('''SELECT phone_num FROM userPref WHERE user_id = ?''', (self.user_id, ))
+        result = cur.fetchone()
+        conn.commit()
+        conn.close()
+
+        if result[0] is None:
+            self.add_phone_num.setVisible(True)
+            self.remove_phone_num.setVisible(False)
+        else:
+            self.add_phone_num.setVisible(False)
+            self.remove_phone_num.setVisible(True)
+
+        if self.remove_phone_num.clicked:
+            remove_msg = QMessageBox()
+            remove_msg.setText('Are you sure you want to stop receiving notifications?')
+            remove_msg.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+
+            if remove_msg.exec() == QMessageBox.StandardButton.Yes:
+                conn = sqlite3.connect('weatherProj\WeatherApp.db')
+                cur = conn.cursor()
+                cur.execute('''UPDATE userPref SET phone_num = ? WHERE user_id = ?''', (None, self.user_id))
+                conn.commit()
+                conn.close()
+                self.remove_phone_num.setVisible(False)
+                self.add_phone_num.setVisible(True)
+            else: return
+
+
+        
+        self.remove_phone_num.setVisible(False)
+        self.add_phone_num.setVisible(True)
         
     #function used to add phone number input field
     def add_phone_num_func(self):
@@ -373,9 +476,21 @@ class GUI(QMainWindow):
         else:
             self.current_index = 0
     
+    def prev_index(self):
+        if self.current_index < len(self.weather_data[1]) - 1:
+            self.current_index -= 1
+        else:
+            self.current_index = 0
+    
     #function used for the 'Next' button to get the next day's weather data, connects to that button
     def click_next_day(self):
         self.next_index()
+        self.update_label()
+        if self.canvas.isVisible():
+            self.plot_data(self.weather_info)
+
+    def click_prev_day(self):
+        self.prev_index()
         self.update_label()
         if self.canvas.isVisible():
             self.plot_data(self.weather_info)
@@ -396,6 +511,9 @@ class GUI(QMainWindow):
     def plot_data(self, df):
         self.next_page.setVisible(True)
         self.prev_page.setVisible(True)
+        self.show_graphs.setVisible(False)
+        self.back_to_forecast.setVisible(True)
+        self.add_phone_num.setVisible(False)
 
         #if the df is not empty then transpose the df, set the columns to the first row, and set the df to the rest of the rows
         if not df.empty:
@@ -480,8 +598,6 @@ class GUI(QMainWindow):
         
     #function used to update the layouts with the weather data
     def update_label(self):
-        print(self.weather_data[1])
-        print(self.current_index)
 
         if self.weather_data and 'currWeatherDF' in self.weather_data[0]:
             #curr_weather = self.weather_data[1]
@@ -574,9 +690,27 @@ class GUI(QMainWindow):
         self.get_weather_button.setVisible(False)
         self.name.setVisible(False)
         self.next_day_button.setVisible(True)
+        self.prev_day_button.setVisible(True)
         self.show_graphs.setVisible(True)
         self.forecast_container.setVisible(True)
         self.forecast_container.repaint()
+        self.location_label.setVisible(True)
+
+        conn = sqlite3.connect('weatherProj\WeatherApp.db')
+        cur = conn.cursor()
+        cur.execute('''SELECT phone_num FROM userPref WHERE user_id = ?''', (self.user_id,))
+        result = cur.fetchone()
+        conn.commit()
+        conn.close()
+        print(result)
+
+        if result[0] is None:
+            self.add_phone_num.setVisible(True)
+            self.remove_phone_num.setVisible(False)
+        else:
+            self.add_phone_num.setVisible(False)
+            self.remove_phone_num.setVisible(True)
+
         self.adjustSize()
 
         #print('!!!!!!!!', self.weather_data) 

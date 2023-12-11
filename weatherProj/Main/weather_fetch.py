@@ -97,7 +97,6 @@ def fetch_weather_data(choice, city, countryCode, callAmount, realTime = None):
             lon = latlon['lon']
             currWeatherData = currentWeather.get_current_weather_data(lat, lon) # get current weather data from function and assign to var
             currWeatherDF = currentWeather.process_weather_data(currWeatherData) # use process function assign to var
-            print('SKSKS', currWeatherDF)
             return (
                 'currWeatherDF', currWeatherDF
             )
