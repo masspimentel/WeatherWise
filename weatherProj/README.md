@@ -10,7 +10,7 @@ This Python script allows you to retrieve weather information for a given city u
 
 UPDATE 24/10/2023: I have now added functionaility to retrieve historical weather data (only to 1979 and up to 4 days in the future). Also, ability to convert between lat and lon to readable location with OpenCageAPI.
 
-UPDATE 10/12/2023: Full UI for users and functionality for notifications. Historical Data is unused (for now). More functions will come later but for now its mostly complete. 
+UPDATE 10/12/2023: Full UI for users and functionality for notifications. Historical Data is unused (for now). More functions will come later but for now its mostly complete. Also, added user authentication. I understand its not needed as it is a local application but it was fun to learn how to implement this.
 
 This is an ongoing project that I will be continually add new functions to. 
 
@@ -20,6 +20,7 @@ This is an ongoing project that I will be continually add new functions to.
 - Libraries: requests, json, datetime, pandas, numpy, matplotlib, seaborn, opencage, time
 - OpenWeatherAPI key (sign up at [OpenWeather](https://openweathermap.org/))
 - OpenCageAPI key (sign up at [OpenCage](https://opencagedata.com/))
+- Twilio API key, Auth. token, and phone number (sign up at [Twilio](https://www.twilio.com/try-twilio))
 
 ## Usage
 
@@ -28,9 +29,13 @@ This is an ongoing project that I will be continually add new functions to.
    ```
    git clone https://github.com/masspimentel/beg-project.git
    cd your-repo
-
+   ```
    Run the script: python main.py
    Enter the city name, country code, and the number of API calls as prompted.
+2. Download the requirements.txt file
+   ```
+   pip install -r /path/to/requirements.txt
+   ```
 
 ## Results
 This application is a displays weather info depending on user location (or user input). For now it will show weather cards for each day. I will also display the graphs shown below. The data is stored in a local SQLite DB. 
@@ -44,7 +49,8 @@ This application is a displays weather info depending on user location (or user 
    a. I chose to use AWS the setup is relatively simple but I wont go over that here as it is all based on preference.
 
 ## Sample Photo of application
-![alt text]()
+![alt text](https://github.com/masspimentel/beg-project/blob/main/images/SampleAppPhoto.PNG?raw=true)
+![alt text](https://github.com/masspimentel/beg-project/blob/main/images/SampleWeatherfromApp.PNG?raw=true)
 
 ## Sample Output of data frame
 |       dt     |     sunrise   |     sunset    |     moonrise  |     moonset   |  pop  |  temp_max  |
@@ -66,9 +72,9 @@ This application is a displays weather info depending on user location (or user 
 - [x] Basic Data Analysis
 - [x] Usage of Pandas
 - [x] Begin implementation of matplotlib & Seaborn for visualization
-- [x] Added functionality to retrieve historical data
-- [ ] Create new, more advanced dataframes for visualization
 - [x] Create GUI & more user input to create a more customizable application
+- [ ] Create new, more advanced dataframes for visualization
+- [ ] Added functionality to retrieve historical data
 ```
 
 ## Acknowledgments
