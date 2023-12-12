@@ -6,7 +6,7 @@
 
 WeatherWise is a Python application that provides detailed weather forecasts for the next 7 days. It features a fully-functional user interface built with the PyQT library, secure user authentication using bcrypt, and data storage in SQLite. Users can view weather graphs and input phone numbers for notifications, and access current weather data. 
 
-### Main library explanation
+## Main library explanation
 
 - [OpenWeatherMap](https://openweathermap.org/api): This is an open-source web API allowing users to fetch weather data from your current location or a preset location. Outputs data in JSON format.
 - [pandas](https://pandas.pydata.org/): A python library widely used in data analysis. This allows the user to create custom dataframes containing data from a plethora of data sources.
@@ -93,7 +93,7 @@ WeatherWise displays weather information based on user location or input. It pre
           sudo pythonX -m pip install -r path/to/requirements.txt
           ```
           X = version of python installed on EC2
-   # To setup a Cron Job
+   ### To setup a Cron Job
    1. While connected to your EC2 instance, put this command in:
       ```
       crontab -e
@@ -131,7 +131,7 @@ WeatherWise displays weather information based on user location or input. It pre
 - [x] Begin implementation of matplotlib
 - [x] Create GUI with PyQT
 - [ ] Create new, more advanced dataframes for visualization
-- [ ] Added functionality to retrieve historical data
+- [ ] Add functionality to retrieve historical data
 ```
 ## Updates
 
@@ -143,5 +143,3 @@ UPDATE 10/12/2023: Full UI for users and functionality for notifications. Histor
 Special thanks to OpenWeather for providing weather data through their API.
 
 Feel free to customize this README to suit your project's specific needs.
-
-does this look right?
