@@ -58,7 +58,7 @@ WeatherWise displays weather information based on user location or input. It pre
 ## To use notification function
 1. Create a Twilio account [here](https://www.twilio.com/try-twilio)
 2. Create an API key, authorization token and obtain your Twilio number
-3. Create a config.py class and name the variables accordingly. 
+3. Create a config.py file and name the variables accordingly. 
 4. Once those are created, you should have the notifications set up.
 5. To automate the notifications, you have a plethora of options to choose. From cloud based (AWS, Google Cloud, Heroku) or local based (Windows Task manager, Linux Cron Jobs).
    
@@ -70,7 +70,7 @@ WeatherWise displays weather information based on user location or input. It pre
    4. Once created, click 'Launch Instance'
    5. AWS should give you instructions on how to connect to your EC2. If it doesnt you can use the steps below to connect.
       
-      a. Download a SSH client (PuTTy or Git Bash)
+      a. Download a SSH client (e.g. PuTTy, Git Bash, etc.)
       
       b. In your CLI put his command in.
          ```
@@ -86,23 +86,28 @@ WeatherWise displays weather information based on user location or input. It pre
    11. You may have to install python depending on your choices in your EC2. You will have to install the different 
        libraries using the requirements.txt file.
        
-       a. Follow this [guide](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install-linux.html) to install           python on your EC2.
+       a. Follow this [guide](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install-linux.html) to install           python on your EC2 instance.
        
        b. To install your requirements.txt, use the below command while connected to your EC2:
           ```
           sudo pythonX -m pip install -r path/to/requirements.txt
           ```
           X = version of python installed on EC2
-   ### To setup a Cron Job
+   ### To setup a Cron Job (using a VIM-like interface)
    1. While connected to your EC2 instance, put this command in:
       ```
       crontab -e
       ```
+      Once in the crontab edit mode, press the I key to start editing.
    2. You can use a command such as below (pointing to the sched_task.py)
       ```
       45 12 * * * /usr/bin/python3 path/to/sched_task.py >> /home/YOURUSERNAME/cronlog.log 2>&1
       ```
-      Each * designates a certain time interval in this format: minute, hour, day, week, month
+      Notes:
+      Each * designates a certain time interval in this format: minute (0-59), hour (0-23), day (1-31), month (1-12), weekday (0-6). For testing purposes, you may want to set the cron job to: 1 * * * * ...
+      ">> /home/YOURUSERNAME/cronlog.log 2>&1" < this will create a log file of the cronjob. It can be used to see if you encounter any errors, this is not required.
+   3. Once you have set up your cron job, you can now press Esc then enter this to write and quit: :wq
+   4. You're done! If you want to view your newly created cron job, you can use this command: crontab -l
 
 
 ## Sample Photo of application
